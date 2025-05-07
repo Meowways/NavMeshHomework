@@ -13,9 +13,16 @@ public class AgentCharacterView : MonoBehaviour
     [SerializeField] private Animator _animator;
     [SerializeField] private AgentCharacter _character;
 
+    private bool _isDead;
+
+    private void Awake()
+    {
+        _isDead = _character.IsDead;
+    }
+
     private void Update()
     {
-        if (_character.IsDead)
+        if (_isDead)
             return;
 
         if (_character.IsCharacterMoving())
@@ -24,7 +31,10 @@ public class AgentCharacterView : MonoBehaviour
             RunningDisable();
 
         if (_character.IsDead)
+        {
             _animator.SetTrigger(DeadKey);
+            _isDead = true;
+        }
 
         if (_character.IsInjur)
             SetWeightLayerTo(InjurLayer, MaxWeight);

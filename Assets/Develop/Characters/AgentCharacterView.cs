@@ -13,12 +13,7 @@ public class AgentCharacterView : MonoBehaviour
     [SerializeField] private Animator _animator;
     [SerializeField] private AgentCharacter _character;
 
-    private bool _isDead;
-
-    private void Awake()
-    {
-        _isDead = _character.IsDead;
-    }
+    private bool _isDead = false;
 
     private void Update()
     {

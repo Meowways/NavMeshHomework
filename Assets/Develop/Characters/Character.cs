@@ -2,10 +2,12 @@ using UnityEngine;
 
 public class Character : MonoBehaviour, IDirectionalMover, IDirectionalRotator, IDamageable
 {
+    private const float MinVelocityForMovement = 0.05f;
+
     [SerializeField] private float _moveSpeed;
     [SerializeField] private float _rotateSpeed;
-    [SerializeField] private float _maxHealth;
 
+    [SerializeField] private float _maxHealth;
     [SerializeField] private float _injuredHealthPercentage;
 
     [SerializeField] private Animator _animator; 
@@ -39,6 +41,7 @@ public class Character : MonoBehaviour, IDirectionalMover, IDirectionalRotator, 
         _rotator.Update(Time.deltaTime);
     }
 
+    public bool IsCharacterMoving() => CurrentVelocity.magnitude >= MinVelocityForMovement;
 
     public void SetMoveDirection(Vector3 inputDirection)
     {

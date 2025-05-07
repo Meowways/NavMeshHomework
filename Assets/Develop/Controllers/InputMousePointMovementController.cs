@@ -1,14 +1,16 @@
 using UnityEngine;
 
-public class InputMousePointMovementCharacterController : Controller
+public class InputMousePointMovementController : Controller
 {
     private const int LeftMouseButton = 0;
 
-    private PointMovementCharacterController _pointMovementControllers;
+    private PointMovementController _pointMovementControllers;
+    private AgentCharacter _character;
 
-    public InputMousePointMovementCharacterController(PointMovementCharacterController controllers)
+    public InputMousePointMovementController(PointMovementController controllers, AgentCharacter character)
     {
         _pointMovementControllers = controllers;
+        _character = character;
     }
 
     protected override void UpgradeLogic(float deltaTime)
@@ -16,8 +18,11 @@ public class InputMousePointMovementCharacterController : Controller
         if (Input.GetMouseButtonDown(LeftMouseButton))
         {
             Ray cameraRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+
             _pointMovementControllers.SetDestinationPoint(cameraRay.origin, cameraRay.direction);
-            _pointMovementControllers.CreateInstanceTargetPoint();
+            _pointMovementControllers.CreateInstanceDestinationPoint();
+
+            _character.SetNotBored();
         }
 
         _pointMovementControllers.Enabled();

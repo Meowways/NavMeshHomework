@@ -40,7 +40,7 @@ public class DamageExplosionBomb : MonoBehaviour
         IDamageable characterHealth = other.GetComponent<IDamageable>();
 
         if (characterHealth != null)
-            _isActivated = true;
+            _isActivated = true; 
     }
 
     private void OnDrawGizmos()

@@ -1,33 +1,43 @@
 using UnityEngine;
-using UnityEngine.AI;
 
 public class ControllerManagementService : MonoBehaviour
 {
+    [SerializeField] AgentCharacter _agentCharacter;
+
     [SerializeField] GameObject _targetPointPrefab;
+    [SerializeField] LayerMask _layerMask;
 
-    [SerializeField] Character _character;
-
-    private Controller _characterController;
+    private Controller _mouseInputController;
+    private Controller _randomPointController;
 
     private void Awake()
     {
-        NavMeshQueryFilter queryFilter = new NavMeshQueryFilter();
-        queryFilter.areaMask = NavMesh.AllAreas;
-        queryFilter.agentTypeID = 0;
+        _randomPointController = new RandomMovementController(_agentCharacter);
 
-        _characterController = new CompositeCharacterController(
-            new InputMousePointMovementCharacterController(
-                new PointMovementCharacterController(_character, queryFilter, _targetPointPrefab)),
-            new RotationCharacterControllerDependsVelocity(_character, _character));
+        _mouseInputController = new CompositeController(new InputMousePointMovementController(
+            new PointMovementAgentController(_agentCharacter, _targetPointPrefab, _layerMask), _agentCharacter),
+            new RotationCharacterControllerDependsVelocity(_agentCharacter, _agentCharacter));
 
-        _characterController.Enabled();
+        _mouseInputController.Enabled();
     }
 
     private void Update()
     {
-        _characterController.Update(Time.deltaTime);
+        _mouseInputController.Update(Time.deltaTime);
 
-        if (_character.IsDead)
-            _characterController.Disabled();
+        if (_agentCharacter.IsDead)
+        {
+            _mouseInputController.Disabled();
+            _randomPointController.Disabled();
+        }
+
+        if (_agentCharacter.IsBored)
+        {
+            _randomPointController.Update(Time.deltaTime);
+            _randomPointController.Enabled();
+        }
+
+        if (_agentCharacter.IsBored == false)
+            _randomPointController.Disabled();
     }
 }

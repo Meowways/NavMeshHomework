@@ -1,16 +1,16 @@
 public class RotationCharacterControllerDependsVelocity : Controller
 {
-    private IDirectionalMover _mover;
+    private AgentCharacter _character;
     private IDirectionalRotator _rotator;
 
-    public RotationCharacterControllerDependsVelocity(IDirectionalMover mover, IDirectionalRotator rotator)
+    public RotationCharacterControllerDependsVelocity(AgentCharacter character, IDirectionalRotator rotator)
     {
-        _mover = mover;
+        _character = character;
         _rotator = rotator;
     }
 
     protected override void UpgradeLogic(float deltaTime)
     {
-        _rotator.SetRotateDirection(_mover.CurrentVelocity);
+        _rotator.SetRotateDirection(_character.CurrentVelocity);
     }
 }

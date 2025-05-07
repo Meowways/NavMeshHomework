@@ -1,10 +1,8 @@
-using UnityEngine;
-
-public class CompositeCharacterController : Controller
+public class CompositeController : Controller
 {
     private Controller[] _controllers;
 
-    public CompositeCharacterController(params Controller[] controllers)
+    public CompositeController(params Controller[] controllers)
     {
         _controllers = controllers;
     }
